@@ -131,31 +131,36 @@
     <!-- Add background video element at top -->
     <video class="background" autoplay muted loop>
         <source src="background video.mp4" type="video/mp4">
-        Your browser does not support the video tag.
+        Oops! Your browser's aukat can't handle this video tag
     </video>
     <div class="emergency-light"></div>
     <div class="scanlines"></div>
     
     <div class="crash-screen">
-        <img src="the creator of the universe.png" alt="Universal Supervisor" class="halo">
-        <h1 class="divine-error">SYSTEM OVERLOADED!</h1>
+        <img src="the creator of the universe.png" alt="AukatGuardian" class="halo" style="display: block; margin: 0 auto; width: 200px;">
+        <h1 class="divine-error" style="text-align: center; display: flex; justify-content: center; align-items: center; height: 100%;">SYSTEM OVERLOADED!</h1>
         <div class="error-code">
             ERROR 420: AUKAT_EXCEEDED<br>
-            DIVINE_BANDWIDTH_LIMIT_REACHED
+            CAPACITY_MAXOUT
+
+
         </div>
         
-        <div class="sanskrit">🕉️ कर्मण्येवाधिकारस्ते मा फलेषु कदाचन 🕉️</div>
+        <div class="sanskrit" style="text-align: center; font-size: 0.95em;">🕉️ कर्मण्येवाधिकारस्ते मा फलेषु कदाचन 🕉️</div>
         
         <button class="button" onclick="tryReboot()">Pray for Reboot</button>
         
-        <div class="debug-info">
-            KARMIC_BUFFER_OVERFLOW<br>
-            SAMSARA_MEMORY_LEAK_DETECTED<br>
-            REINCARNATION_CYCLE_CORRUPTED
-        </div>
+        
     </div>
 
     <script>
+        const errors = [
+            "DIVINE_ACCESS_DENIED", 
+            "KARMA_REBOOT_REQUIRED",
+            "DESTINY_404_NOT_FOUND",
+            "MAYA_SYSTEM_FAILURE"
+        ];
+
         function tryReboot() {
             const btn = document.querySelector('.button');
             btn.innerHTML = "REBOOTING UNIVERSE...";
@@ -175,17 +180,10 @@
         }
 
         // Generate random error messages
-        const errors = [
-            "DIVINE_FIREWALL_BLOCKED", 
-            "KARMA_SERVER_TIMEOUT",
-            "DESTINY_404_NOT_FOUND",
-            "MAYA_INTERFACE_CRASH"
-        ];
-        
         setInterval(() => {
             document.querySelector('.error-code').innerHTML = `
                 ERROR ${Math.floor(Math.random() * 500)}: ${errors[Math.floor(Math.random()*errors.length)]}<br>
-                DHARMA_PROTOCOL_VIOLATION
+                KARMA_INTERRUPT_ALERT
             `;
         }, 3000);
     </script>

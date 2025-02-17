@@ -204,7 +204,7 @@
     
     <div class="crash-screen">
         <img src="the creator of the universe.png" alt="AukatGuardian" class="halo" style="display: block; margin: 0 auto; width: 200px;">
-       <h1 class="divine-error" style="text-align: center; display: flex; justify-content: center; align-items: center; height: 100%; font-size: 1.25em;">SYSTEM OVERLOADED!</h1>
+        <h1 class="divine-error" style="text-align: center; display: flex; justify-content: center; align-items: center; height: 100%; font-size: 1.25em;">SYSTEM OVERLOADED!</h1>
         <div class="error-code">
             ERROR 420: AUKAT_EXCEEDED<br>
             CAPACITY_MAXOUT
@@ -212,7 +212,7 @@
         
         <div class="sanskrit" style="text-align: center; font-size: 0.95em;">🕉️ कर्मण्येवाधिकारस्ते मा फलेषु कदाचन 🕉️</div>
         
-        <button class="button" onclick="tryReboot()">Pray for Reboot</button>
+        <button class="button" onclick="tryReboot()">Pray for Reality Reboot</button>
     </div>
 
     <script>
@@ -229,9 +229,13 @@
             btn.disabled = true;
             
             setTimeout(() => {
-                alert("Reboot failed! Maa Kasam, try reducing your expectations!");
-                btn.innerHTML = "Pray Harder";
+                alert("Reboot Failed! Not even Bollywood's wildest plot could match your expectations. Lower your expectations and try again.");
+                btn.innerHTML = "Call for Cosmic Reset";
                 btn.disabled = false;
+                
+                setTimeout(() => {
+                    alert("Reboot Failed Again! Dude, even Karan Johar can't write a script this dramatic. Lower your plot twists and try again!");
+                }, 2000);
             }, 2000);
             
             // Add glitch effect

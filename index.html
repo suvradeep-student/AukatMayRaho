@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Divine System Error - Aukat Exceeded</title>
+    <!-- Add custom fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500&family=VT323&display=swap" rel="stylesheet">
     <style>
         .background {
             position: fixed;
@@ -14,31 +16,38 @@
             object-fit: cover;
             opacity: 0.3;
             z-index: -1;
+            filter: hue-rotate(90deg) contrast(1.5);
         }
 
         body {
             background: #000;
             color: #00ff00;
-            font-family: 'Courier New', monospace;
+            font-family: 'VT323', 'Courier New', monospace;
             margin: 0;
             overflow: hidden;
             position: relative;
         }
 
         .crash-screen {
-            background: radial-gradient(circle, rgba(0,0,100,0.8) 0%, rgba(0,0,0,0.9) 100%);
+            background: none;
             min-height: 100vh;
             padding: 2rem;
             text-align: center;
-            border: 8px solid #ff0000;
+            border: 4px solid #ff0000;
+            box-shadow: 0 0 50px rgba(255, 0, 0, 0.3), inset 0 0 30px rgba(255, 0, 0, 0.2);
             position: relative;
         }
 
         .divine-error {
+            font-family: 'Orbitron', sans-serif;
             font-size: 2.5em;
             text-shadow: 0 0 10px #00ffff;
             margin: 2rem;
-            animation: glitch 1s infinite;
+            animation: glitch 1s infinite, float 3s ease-in-out infinite, color-change 5s infinite;
+            background: linear-gradient(45deg, #00ffff, #ff00ff);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
 
         .halo {
@@ -48,6 +57,8 @@
             border-radius: 50%;
             border: 3px solid gold;
             box-shadow: 0 0 30px #ffff00;
+            animation: halo-pulse 2s infinite;
+            filter: drop-shadow(0 0 15px gold);
         }
 
         .error-code {
@@ -65,6 +76,17 @@
             100% { transform: translate(0); }
         }
 
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        @keyframes halo-pulse {
+            0% { transform: scale(0.95); opacity: 0.8; }
+            50% { transform: scale(1.05); opacity: 1; }
+            100% { transform: scale(0.95); opacity: 0.8; }
+        }
+
         .scanlines {
             position: fixed;
             top: 0;
@@ -73,12 +95,18 @@
             height: 100%;
             background: repeating-linear-gradient(
                 0deg,
-                rgba(0, 255, 0, 0.1) 0px,
-                rgba(0, 255, 0, 0.1) 2px,
+                rgba(0, 255, 0, 0.15) 0px,
+                rgba(0, 255, 0, 0.15) 2px,
                 transparent 2px,
                 transparent 4px
             );
             pointer-events: none;
+            animation: scanline-move 1s linear infinite;
+        }
+
+        @keyframes scanline-move {
+            from { background-position: 0 0; }
+            to { background-position: 0 4px; }
         }
 
         .emergency-light {
@@ -104,11 +132,31 @@
             cursor: pointer;
             margin: 2rem;
             transition: 0.3s;
+            position: relative;
+            overflow: hidden;
+            border-radius: 5px;
+            box-shadow: 0 0 15px #00ff00;
         }
 
         .button:hover {
             background: #00ff00;
             color: #000;
+        }
+
+        .button::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, #00ff00 50%, transparent);
+            animation: button-glow 3s infinite;
+        }
+
+        @keyframes button-glow {
+            0% { transform: rotate(0deg) translate(-50%, -50%); }
+            100% { transform: rotate(360deg) translate(-50%, -50%); }
         }
 
         .sanskrit {
@@ -125,6 +173,22 @@
             color: #666;
             font-size: 0.8em;
         }
+
+        .matrix-rain {
+            position: fixed;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            opacity: 0.1;
+            z-index: -1;
+        }
+
+        .particles {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
     </style>
 </head>
 <body>
@@ -135,6 +199,8 @@
     </video>
     <div class="emergency-light"></div>
     <div class="scanlines"></div>
+    <canvas class="particles"></canvas>
+    <div class="matrix-rain" id="matrixRain"></div>
     
     <div class="crash-screen">
         <img src="the creator of the universe.png" alt="AukatGuardian" class="halo" style="display: block; margin: 0 auto; width: 200px;">
@@ -142,15 +208,11 @@
         <div class="error-code">
             ERROR 420: AUKAT_EXCEEDED<br>
             CAPACITY_MAXOUT
-
-
         </div>
         
         <div class="sanskrit" style="text-align: center; font-size: 0.95em;">🕉️ कर्मण्येवाधिकारस्ते मा फलेषु कदाचन 🕉️</div>
         
         <button class="button" onclick="tryReboot()">Pray for Reboot</button>
-        
-        
     </div>
 
     <script>
@@ -186,6 +248,88 @@
                 KARMA_INTERRUPT_ALERT
             `;
         }, 3000);
+
+        // Add particle system
+        const canvas = document.querySelector('.particles');
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        const particles = [];
+        class Particle {
+            constructor() {
+                this.reset();
+            }
+            
+            reset() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 2;
+                this.speed = Math.random() * 0.5 + 0.1;
+                this.color = `hsl(${Math.random() * 360}, 100%, 50%)`;
+            }
+
+            update() {
+                this.y += this.speed;
+                if(this.y > canvas.height) this.reset();
+            }
+
+            draw() {
+                ctx.fillStyle = this.color;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        function initParticles() {
+            for(let i = 0; i < 100; i++) particles.push(new Particle());
+        }
+
+        function animateParticles() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particles.forEach(p => {
+                p.update();
+                p.draw();
+            });
+            requestAnimationFrame(animateParticles);
+        }
+
+        // Add matrix rain effect
+        function createMatrixRain() {
+            const chars = "01ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+            const fontSize = 14;
+            const columns = canvas.width / fontSize;
+            const drops = Array(Math.floor(columns)).fill(0);
+
+            function draw() {
+                ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                
+                ctx.fillStyle = "#0F0";
+                ctx.font = fontSize + "px monospace";
+
+                drops.forEach((drop, i) => {
+                    const char = chars[Math.floor(Math.random() * chars.length)];
+                    ctx.fillText(char, i * fontSize, drop * fontSize);
+                    
+                    if(drop * fontSize > canvas.height && Math.random() > 0.975) 
+                        drops[i] = 0;
+                    drops[i]++;
+                });
+            }
+
+            setInterval(draw, 50);
+        }
+
+        // Initialize effects
+        window.addEventListener('load', () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            initParticles();
+            animateParticles();
+            createMatrixRain();
+        });
     </script>
 </body>
 </html>
